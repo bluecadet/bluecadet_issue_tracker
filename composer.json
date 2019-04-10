@@ -1,0 +1,19 @@
+{
+  "name": "bluecadet/bluecadet_issue_tracker",
+  "description": "Adds issue tracking for clients within your drupal site.",
+  "type": "custom-drupal-module",
+  "authors": [
+    {
+      "name": "Pete Inge",
+      "role": "Maintainer"
+    }
+  ],
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^5.3.3 || ^7.0",
+    "composer/installers": "^1.0@dev",
+    "knplabs/github-api": "^2.11",
+    "php-http/guzzle6-adapter": "^1.1"
+  }
+}
