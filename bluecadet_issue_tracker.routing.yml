@@ -1,0 +1,14 @@
+bluecadet_issue_tracker.client:
+  path: '/admin/bc-issue-tracker'
+  defaults:
+    _controller: '\Drupal\bluecadet_issue_tracker\Controller\ClientView::build'
+    _title: 'Client Issue Tracker'
+  requirements:
+    _permission: 'client view issue tracker'
+
+bluecadet_issue_tracker.settings_info:
+  path: '/admin/config/development/bc-issue-tracker'
+  defaults:
+    _form: \Drupal\bluecadet_issue_tracker\Form\BCIssueTrackerSettings
+  requirements:
+    _permission: 'administer bc issue tracker'

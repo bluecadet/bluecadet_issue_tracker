@@ -1,0 +1,5 @@
+issues:
+  version: 1.x
+  css:
+    theme:
+      assets/dist/css/issues.css: {}
