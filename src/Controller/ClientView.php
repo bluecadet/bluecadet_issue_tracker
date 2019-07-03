@@ -17,13 +17,20 @@ class ClientView extends ControllerBase {
   function __construct() {
     $settings['bcit'] = \Drupal::state()->get('bluecadet_issue_tracker.settings', []);
 
-    $this->github_token = $settings['bcit']['github']['github_token'];
-    $this->github_org = $settings['bcit']['github']['github_org'];
-    $this->github_proj = $settings['bcit']['github']['github_proj'];
-    $this->github_label = $settings['bcit']['github']['github_label'];
+    if (!empty($settings['bcit'])) {
+      $this->github_token = $settings['bcit']['github']['github_token'];
+      $this->github_org = $settings['bcit']['github']['github_org'];
+      $this->github_proj = $settings['bcit']['github']['github_proj'];
+      $this->github_label = $settings['bcit']['github']['github_label'];
+    }
   }
 
   public function build() {
+
+    if (empty($this->github_token) || empty($this->github_org) || empty($this->github_proj) || empty($this->github_label) ) {
+      drupal_set_message("Configuration appears to not be set.", 'warning');
+      return [];
+    }
 
     $build = [
       '#prefix' => '<div id="issue-board">',
