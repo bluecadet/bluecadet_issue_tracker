@@ -88,6 +88,9 @@ class ClientView extends ControllerBase {
             $build['issues'][$board->id]['#items'][] = ['#markup' => Markup::create("[#" . $i['number'] . "] " . $i['title'])];
           }
         }
+
+        $build['issues'][$board->id]['#title'] .= " (" . count($build['issues'][$board->id]['#items']) . ")";
+
       }
     }
 
