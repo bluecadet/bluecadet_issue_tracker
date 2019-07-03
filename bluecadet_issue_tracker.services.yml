@@ -1,0 +1,7 @@
+services:
+  cache.bcit_issue_tracker:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [bcit_issue_tracker]
