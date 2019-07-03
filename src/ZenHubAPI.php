@@ -4,8 +4,8 @@ namespace Drupal\bluecadet_issue_tracker;
 
 class ZenHubAPI {
   private $zenhub_root = "https://api.zenhub.io/p1";
-  private $repo_id = "157432157";
-  private $zenhub_api_token = '2c7e79a8dfe43cb2a18efcb948fbcc228954f2a34b73c500b7f9b3b161dd50bdbbb5ae9ad4d28682';
+  private $repo_id = "";
+  private $zenhub_api_token = "";
 
   function __construct() {
     $settings['bcit'] = \Drupal::state()->get('bluecadet_issue_tracker.settings', []);
