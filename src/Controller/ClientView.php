@@ -14,6 +14,8 @@ define("BCIT_CACHETIME", 3600);
  */
 class ClientView extends ControllerBase {
 
+  private $ready = FALSE;
+
   private $github_token = "";
   private $github_org = "";
   private $github_proj = "";
@@ -38,6 +40,8 @@ class ClientView extends ControllerBase {
       $this->client->authenticate($this->github_token, NULL, GithubClient::AUTH_HTTP_TOKEN);
 
       $this->zen = new ZenHubAPI();
+
+      $this->ready = TRUE;
     }
   }
 
@@ -46,7 +50,7 @@ class ClientView extends ControllerBase {
    */
   public function build() {
 
-    if (empty($this->github_token) || empty($this->github_org) || empty($this->github_proj) || empty($this->github_label)) {
+    if (!$this->ready) {
       drupal_set_message("Configuration appears to not be set.", 'warning');
       return [];
     }
@@ -116,13 +120,13 @@ class ClientView extends ControllerBase {
     if ($cache = \Drupal::cache('bcit_issue_tracker')->get($cid)) {
       // drupal_set_message("Issues Cache hit");
       $issues = $cache->data;
+      return $issues;
     }
-    else {
-      // drupal_set_message("Issues Cache miss");
-      $issues = $this->client->api('issue')->all($this->github_org, $this->github_proj, ['labels' => $this->github_label]);
 
-      \Drupal::cache('bcit_issue_tracker')->set($cid, $issues, (time() + BCIT_CACHETIME), ["bcit:github", "bcit:issues"]);
-    }
+    // drupal_set_message("Issues Cache miss");
+    $issues = $this->client->api('issue')->all($this->github_org, $this->github_proj, ['labels' => $this->github_label]);
+
+    \Drupal::cache('bcit_issue_tracker')->set($cid, $issues, (time() + BCIT_CACHETIME), ["bcit:github", "bcit:issues"]);
 
     return $issues;
   }
@@ -133,13 +137,13 @@ class ClientView extends ControllerBase {
     if ($cache = \Drupal::cache('bcit_issue_tracker')->get($cid)) {
       // drupal_set_message("CIssues Cache hit");
       $issues = $cache->data;
+      return $issues;
     }
-    else {
-      // drupal_set_message("CIssues Cache miss");
-      $issues = $this->client->api('issue')->all($this->github_org, $this->github_proj, ['labels' => $this->github_label, 'state' => 'closed']);
 
-      \Drupal::cache('bcit_issue_tracker')->set($cid, $issues, (time() + BCIT_CACHETIME), ["bcit:github", "bcit:issues", "bcit:issues:closed"]);
-    }
+    // drupal_set_message("CIssues Cache miss");
+    $issues = $this->client->api('issue')->all($this->github_org, $this->github_proj, ['labels' => $this->github_label, 'state' => 'closed']);
+
+    \Drupal::cache('bcit_issue_tracker')->set($cid, $issues, (time() + BCIT_CACHETIME), ["bcit:github", "bcit:issues", "bcit:issues:closed"]);
 
     return $issues;
   }
@@ -151,13 +155,14 @@ class ClientView extends ControllerBase {
     if ($cache = \Drupal::cache('bcit_issue_tracker')->get($cid)) {
       // drupal_set_message("Boards Cache hit");
       $boards = $cache->data;
+      return $boards;
     }
-    else {
-      // drupal_set_message("Boards Cache miss");
-      $boards = $this->zen->getAllBoards();
 
-      \Drupal::cache('bcit_issue_tracker')->set($cid, $boards, (time() + BCIT_CACHETIME), ["bcit:zenhub", "bcit:zboards"]);
-    }
+    // drupal_set_message("Boards Cache miss");
+    $boards = $this->zen->getAllBoards();
+
+    \Drupal::cache('bcit_issue_tracker')->set($cid, $boards, (time() + BCIT_CACHETIME), ["bcit:zenhub", "bcit:zboards"]);
+
     return $boards;
   }
 
