@@ -7,6 +7,9 @@ use Drupal\Core\Controller\ControllerBase;
 use Github\Client as GithubClient;
 use Drupal\bluecadet_issue_tracker\ZenHubAPI;
 
+/**
+ *
+ */
 class ClientView extends ControllerBase {
 
   private $github_token = "";
@@ -14,7 +17,10 @@ class ClientView extends ControllerBase {
   private $github_proj = "";
   private $github_label = "";
 
-  function __construct() {
+  /**
+   *
+   */
+  public function __construct() {
     $settings['bcit'] = \Drupal::state()->get('bluecadet_issue_tracker.settings', []);
 
     if (!empty($settings['bcit'])) {
@@ -25,9 +31,12 @@ class ClientView extends ControllerBase {
     }
   }
 
+  /**
+   *
+   */
   public function build() {
 
-    if (empty($this->github_token) || empty($this->github_org) || empty($this->github_proj) || empty($this->github_label) ) {
+    if (empty($this->github_token) || empty($this->github_org) || empty($this->github_proj) || empty($this->github_label)) {
       drupal_set_message("Configuration appears to not be set.", 'warning');
       return [];
     }
@@ -37,7 +46,7 @@ class ClientView extends ControllerBase {
       '#suffix' => '</div>',
       '#attached' => [
         'library' => 'bluecadet_issue_tracker/issues',
-      ]
+      ],
     ];
 
     $client = new GithubClient();
@@ -52,9 +61,8 @@ class ClientView extends ControllerBase {
     $zen = new ZenHubAPI();
     $boards = $zen->getAllBoards();
     // ksm($boards);
-
     if (!empty($boards)) {
-      foreach($boards->pipelines as &$board) {
+      foreach ($boards->pipelines as &$board) {
         $boards->to_show = [];
 
         $build['issues'][$board->id] = [
@@ -90,4 +98,5 @@ class ClientView extends ControllerBase {
 
     return $build;
   }
+
 }

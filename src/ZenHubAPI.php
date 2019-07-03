@@ -2,12 +2,18 @@
 
 namespace Drupal\bluecadet_issue_tracker;
 
+/**
+ *
+ */
 class ZenHubAPI {
   private $zenhub_root = "https://api.zenhub.io/p1";
   private $repo_id = "";
   private $zenhub_api_token = "";
 
-  function __construct() {
+  /**
+   *
+   */
+  public function __construct() {
     $settings['bcit'] = \Drupal::state()->get('bluecadet_issue_tracker.settings', []);
 
     $this->zenhub_root = $settings['bcit']['zenhub']['base_url'];
@@ -15,6 +21,9 @@ class ZenHubAPI {
     $this->zenhub_api_token = $settings['bcit']['zenhub']['zenhub_api_token'];
   }
 
+  /**
+   *
+   */
   public function getAllBoards() {
     $path = "/repositories/" . $this->repo_id . "/board";
 
@@ -23,7 +32,9 @@ class ZenHubAPI {
     return $data;
   }
 
-
+  /**
+   *
+   */
   private function GetCall($path, $params = []) {
     $ch = curl_init();
 
@@ -35,9 +46,9 @@ class ZenHubAPI {
     curl_setopt($ch, CURLOPT_URL, $call_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
       'X-Authentication-Token: ' . $this->zenhub_api_token,
-    ));
+    ]);
 
     $return = curl_exec($ch);
     // ksm($return);
@@ -47,4 +58,5 @@ class ZenHubAPI {
 
     return $data;
   }
+
 }
