@@ -1,6 +1,6 @@
 type: module
 name: Bluecadet Issue Tracker
-description: ''
+description: "Track Client issues from Bluecadet's github account."
 package: Bluecadet
 version: '8.x-1.0.0'
 core: 8.x
